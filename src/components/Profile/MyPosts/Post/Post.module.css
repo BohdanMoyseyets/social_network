@@ -1,0 +1,15 @@
+.item{
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.item img{
+    height: 60px;
+    border-radius: 30px;
+}
+.item span{
+    display: inline-block;
+    /* height: 50px; */
+    box-sizing: border-box;
+    vertical-align: top;
+}

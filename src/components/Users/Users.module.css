@@ -1,0 +1,13 @@
+.user_block{
+    display: flex;
+}
+.user_info{
+    display: flex;
+    width: 500px;
+    justify-content: space-between;
+}
+.user_photo{
+    width: 100px;
+    height: 100px;
+    border-radius: 15px;
+}

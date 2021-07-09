@@ -1,0 +1,19 @@
+.nav{
+  background: grey;
+  grid-area: n;
+}
+
+.item{
+  width: 100%;
+  color:white;
+  text-align: center;
+  padding: 5px;
+}
+.item a{
+  color: white;
+  text-decoration: none;
+}
+
+.item a.active{
+  color: gold;
+}
