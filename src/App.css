@@ -9,6 +9,7 @@
   grid-template-areas: 
   "h h"
   "n c";
+  
 }
 .app-wrapper-content{
     background: azure;
