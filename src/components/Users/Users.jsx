@@ -1,6 +1,7 @@
 import React from 'react';
 import style_s from './Users.module.css';
-import userPhoto from '../../assets/images/profile_img.png'
+import userPhoto from '../../assets/images/profile_img.png';
+// import preloader from '../../assets/images/loader.gif';
 
 const Users = (props) => {
 
