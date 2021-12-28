@@ -28,7 +28,7 @@ class UsersContainerAPI extends React.Component {
 
     render() {
         return <>
-            {this.props.isFetching ? <img src={preloader} style={{backgroundColor: '#fff'}} /> : <Users totalUsersCount={this.props.totalUsersCount}
+            {this.props.isFetching ? <img src={preloader} style={{backgroundColor: '#aaa'}} /> : <Users totalUsersCount={this.props.totalUsersCount}
                 pageSize={this.props.pageSize}
                 currentPage={this.props.currentPage}
                 onPageChanged={this.onPageChanged}
