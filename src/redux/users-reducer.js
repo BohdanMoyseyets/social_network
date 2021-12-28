@@ -60,12 +60,12 @@ const usersReducer = (state = initial_state, action) => {
     }
 }
 
-export const followAC = (userId) => ({ type: FOLLOW_USER, userId });
-export const ignoreAC = (userId) => ({ type: IGNORE_USER, userId });
-export const setUsersAC = (users) => ({ type: SET_USERS, users });
-export const setCurrentPageAC = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage });
-export const setTotalUsersCountAC = (count) => ({ type: SET_TOTAL_USERS_COUNT, count });
-export const setFetchingAC = (isFetching) => ({ type: SET_FETCHING, isFetching });
+export const followUser = (userId) => ({ type: FOLLOW_USER, userId });
+export const ignoreUser = (userId) => ({ type: IGNORE_USER, userId });
+export const setUsers = (users) => ({ type: SET_USERS, users });
+export const setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage });
+export const setTotalUsersCount = (count) => ({ type: SET_TOTAL_USERS_COUNT, count });
+export const setFetching = (isFetching) => ({ type: SET_FETCHING, isFetching });
 
 
 

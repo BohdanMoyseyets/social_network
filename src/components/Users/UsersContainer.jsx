@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { followAC, ignoreAC, setCurrentPageAC, setUsersAC, setTotalUsersCountAC, setFetchingAC } from '../../redux/users-reducer';
+import { followUser, ignoreUser, setCurrentPage, setUsers, setTotalUsersCount, setFetching } from '../../redux/users-reducer';
 import Users from './Users';
 import * as axios from "axios";
 import preloader from '../../assets/images/loader.gif';
@@ -28,7 +28,7 @@ class UsersContainerAPI extends React.Component {
 
     render() {
         return <>
-            {this.props.isFetching ? <img src={preloader} style={{backgroundColor: '#aaa'}} /> : <Users totalUsersCount={this.props.totalUsersCount}
+            {this.props.isFetching ? <img src={preloader} style={{ backgroundColor: '#aaa' }} /> : <Users totalUsersCount={this.props.totalUsersCount}
                 pageSize={this.props.pageSize}
                 currentPage={this.props.currentPage}
                 onPageChanged={this.onPageChanged}
@@ -51,16 +51,24 @@ let mapStateToProps = (state) => {
     }
 }
 
-let mapDispatchToProps = (dispatch) => {
-    return {
-        followUser: (userId) => { dispatch(followAC(userId)) },
-        ignoreUser: (userId) => { dispatch(ignoreAC(userId)) },
-        setUsers: (users) => { dispatch(setUsersAC(users)) },
-        setCurrentPage: (pageNumber) => { dispatch(setCurrentPageAC(pageNumber)) },
-        setTotalUsersCount: (count) => { dispatch(setTotalUsersCountAC(count)) },
-        setFetching: (isFetching) => { dispatch(setFetchingAC(isFetching)) }
-    }
-}
+// let mapDispatchToProps = (dispatch) => {
+//     return {
+//         followUser: (userId) => { dispatch(followUser(userId)) },
+//         ignoreUser: (userId) => { dispatch(ignoreUser(userId)) },
+//         setUsers: (users) => { dispatch(setUsers(users)) },
+//         setCurrentPage: (pageNumber) => { dispatch(setCurrentPage(pageNumber)) },
+//         setTotalUsersCount: (count) => { dispatch(setTotalUsersCount(count)) },
+//         setFetching: (isFetching) => { dispatch(setFetching(isFetching)) }
+//     }
+// }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainerAPI);
+export default connect(mapStateToProps,
+    {
+        followUser,
+        ignoreUser,
+        setUsers,
+        setCurrentPage,
+        setTotalUsersCount,
+        setFetching
+    })(UsersContainerAPI);
