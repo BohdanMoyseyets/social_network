@@ -5,7 +5,7 @@ import Message from './Dialog/Message/Message';
 import { Route } from 'react-router-dom';
 
 const Dialogs = (props) => {
-debugger
+// debugger
     let dialogsDataElements = props.dialogsData.map(dialog => <Dialog name={dialog.name} id={dialog.id} />);
 
     let messagesDataElements = props.dialogsData.map(message => message.messagesData.map(

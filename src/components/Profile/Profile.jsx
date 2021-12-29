@@ -3,12 +3,12 @@ import MyPostsContainer from './MyPosts/MyPostsContainer';
 import PersonInfo from './PersonInfo/PersonInfo';
 import style_s from './Profile.module.css'
 
-const Profile = (props) =>{
-    return(
+const Profile = (props) => {
+  return (
     <div>
-      <PersonInfo />
+      <PersonInfo profile={props.profile} />
       <MyPostsContainer store={props.store} />
     </div>
-    );
+  );
 }
 export default Profile;

@@ -50,7 +50,7 @@ const usersReducer = (state = initial_state, action) => {
             return { ...state, currentPage: action.currentPage}
         }
         case SET_TOTAL_USERS_COUNT: {
-            return { ...state, totalUsersCount: action.count>80 ? 80 : action.count}
+            return { ...state, totalUsersCount: action.count>1180 ? 8000 : action.count}
         }
         case SET_FETCHING: {
             return { ...state, isFetching: action.isFetching}

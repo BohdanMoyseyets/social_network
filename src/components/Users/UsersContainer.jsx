@@ -3,13 +3,15 @@ import { connect } from 'react-redux';
 import { followUser, ignoreUser, setCurrentPage, setUsers, setTotalUsersCount, setFetching } from '../../redux/users-reducer';
 import Users from './Users';
 import * as axios from "axios";
-import preloader from '../../assets/images/loader.gif';
+import Preloader from '../common/Preloader';
 
 class UsersContainerAPI extends React.Component {
 
     componentDidMount() {
         this.props.setFetching(true);
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).then(response => {
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`, {
+            withCredentials: true
+        }).then(response => {
             this.props.setFetching(false);
             this.props.setUsers(response.data.items);
             this.props.setTotalUsersCount(response.data.totalCount)
@@ -18,7 +20,9 @@ class UsersContainerAPI extends React.Component {
     onPageChanged = (selectedPage) => {
         this.props.setCurrentPage(selectedPage);
         this.props.setFetching(true);
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${selectedPage}&count=${this.props.pageSize}`).then(response => {
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${selectedPage}&count=${this.props.pageSize}`, {
+            withCredentials: true
+        }).then(response => {
             this.props.setFetching(false);
             this.props.setUsers(response.data.items)
         });
@@ -28,7 +32,7 @@ class UsersContainerAPI extends React.Component {
 
     render() {
         return <>
-            {this.props.isFetching ? <img src={preloader} style={{ backgroundColor: '#aaa' }} /> : <Users totalUsersCount={this.props.totalUsersCount}
+            {this.props.isFetching ? <Preloader /> : <Users totalUsersCount={this.props.totalUsersCount}
                 pageSize={this.props.pageSize}
                 currentPage={this.props.currentPage}
                 onPageChanged={this.onPageChanged}
