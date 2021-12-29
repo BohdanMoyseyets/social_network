@@ -1,9 +1,12 @@
+import { usersAPI } from "../api/api";
+
 const FOLLOW_USER = 'FOLLOW_USER';
 const IGNORE_USER = 'IGNORE_USER';
 const SET_USERS = 'SET_USERS';
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
 const SET_FETCHING = 'SET_FETCHING';
+const SET_FOLLOWING_IN_PROGRESS = 'SET_FOLLOWING_IN_PROGRESS';
 
 let initial_state = {
     users: [
@@ -14,9 +17,10 @@ let initial_state = {
     pageSize: 8,
     totalUsersCount: 0,
     currentPage: 1,
-    isFetching:false
+    isFetching: false,
+    isFollowingInProgress: []
 
-    
+
 }
 
 const usersReducer = (state = initial_state, action) => {
@@ -25,8 +29,8 @@ const usersReducer = (state = initial_state, action) => {
             return {
                 ...state,
                 users: state.users.map(u => {
-                    if( u.id === action.userId ){
-                        return { ...u, isFollowed: true}
+                    if (u.id === action.userId) {
+                        return { ...u, followed: true }
                     }
                     return u;
                 })
@@ -36,24 +40,32 @@ const usersReducer = (state = initial_state, action) => {
             return {
                 ...state,
                 users: state.users.map(u => {
-                    if( u.id === action.userId ){
-                        return { ...u, isFollowed: false}
+                    if (u.id === action.userId) {
+                        return { ...u, followed: false }
                     }
                     return u;
                 })
             }
         }
         case SET_USERS: {
-            return { ...state, users:  action.users}
+            return { ...state, users: action.users }
         }
         case SET_CURRENT_PAGE: {
-            return { ...state, currentPage: action.currentPage}
+            return { ...state, currentPage: action.currentPage }
         }
         case SET_TOTAL_USERS_COUNT: {
-            return { ...state, totalUsersCount: action.count>1180 ? 8000 : action.count}
+            return { ...state, totalUsersCount: action.count > 1180 ? 8000 : action.count }
         }
         case SET_FETCHING: {
-            return { ...state, isFetching: action.isFetching}
+            return { ...state, isFetching: action.isFetching }
+        }
+        case SET_FOLLOWING_IN_PROGRESS: {
+            return {
+                ...state,
+                isFollowingInProgress: action.isFollowingInProgress
+                    ? [...state.isFollowingInProgress, action.id]
+                    : state.isFollowingInProgress.filter(id => id != action.id)
+            }
         }
         default:
             return state;
@@ -66,7 +78,45 @@ export const setUsers = (users) => ({ type: SET_USERS, users });
 export const setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage });
 export const setTotalUsersCount = (count) => ({ type: SET_TOTAL_USERS_COUNT, count });
 export const setFetching = (isFetching) => ({ type: SET_FETCHING, isFetching });
+export const setFollowingInProgress = (isFollowingInProgress, id) => ({ type: SET_FOLLOWING_IN_PROGRESS, isFollowingInProgress, id });
 
 
+// thunk
+export const getUsers = (currentPage, pageSize) => {
+    return (dispatch) => {
+        dispatch(setFetching(true));
+        usersAPI.getUser(currentPage, pageSize).then(data => {
+            dispatch(setFetching(false));
+            dispatch(setUsers(data.items));
+            dispatch(setTotalUsersCount(data.totalCount));
+        });
+    }
+}
+
+export const follow = (userId) => {
+    return (dispatch) => {
+        dispatch(setFollowingInProgress(true, userId));
+        usersAPI.follow(userId)
+            .then(response => {
+                if (response.data.resultCode == 0) {
+                    dispatch(followUser(userId));
+                }
+                dispatch(setFollowingInProgress(false, userId));
+            });
+    }
+}
+
+export const ignore = (userId) => {
+    return (dispatch) => {
+        dispatch(setFollowingInProgress(true, userId));
+        usersAPI.ignore(userId)
+            .then(response => {
+                if (response.data.resultCode == 0) {
+                    dispatch(ignoreUser(userId));
+                }
+                dispatch(setFollowingInProgress(false, userId));
+            });
+    }
+}
 
 export default usersReducer;

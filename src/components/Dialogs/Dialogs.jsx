@@ -3,6 +3,7 @@ import Dialog from './Dialog/Dialog';
 import style_s from './Dialogs.module.css'
 import Message from './Dialog/Message/Message';
 import { Route } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 const Dialogs = (props) => {
 // debugger
