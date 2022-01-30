@@ -8,7 +8,7 @@ const Header = (props) =>{
         <img src='https://www.designevo.com/images/home/3d-green-letter-o.png'/>
         <div className={style_s.loginBlock}>
             {
-                props.isLogged ? props.login : <NavLink to={"/login"}>Login</NavLink>
+                props.isLogged ? <div>{props.login} - <button onClick={ props.logout}>Log out</button></div>  : <NavLink to={"/login"}>Login</NavLink>
             }
             
         </div>

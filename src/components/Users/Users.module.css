@@ -6,6 +6,9 @@
     width: 500px;
     justify-content: space-between;
 }
+.status_block{
+    color: red;
+}
 .user_photo{
     width: 100px;
     height: 100px;

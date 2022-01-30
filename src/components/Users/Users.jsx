@@ -45,7 +45,7 @@ const Users = (props) => {
                             <div>
                                 {u.name}
                             </div>
-                            <div>
+                            <div className={style_s.status_block}>
                                 {u.status}
                             </div>
                         </div>

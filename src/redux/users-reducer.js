@@ -82,7 +82,7 @@ export const setFollowingInProgress = (isFollowingInProgress, id) => ({ type: SE
 
 
 // thunk
-export const getUsers = (currentPage, pageSize) => {
+export const getUsersRequest = (currentPage, pageSize) => {
     return (dispatch) => {
         dispatch(setFetching(true));
         usersAPI.getUser(currentPage, pageSize).then(data => {

@@ -4,23 +4,20 @@ import style_s from './Dialogs.module.css'
 import Message from './Dialog/Message/Message';
 import { Route } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
+import { Field, reduxForm } from 'redux-form';
+import { Textarea } from '../common/FormsControls';
+import { maxLengthCreator, required } from '../../utils/validators/validators';
 
 const Dialogs = (props) => {
-// debugger
+    // debugger
     let dialogsDataElements = props.dialogsData.map(dialog => <Dialog name={dialog.name} id={dialog.id} />);
 
     let messagesDataElements = props.dialogsData.map(message => message.messagesData.map(
         el => <Route path={'/dialogs/' + message.id} render={() => <Message message={el.message} />} />));
 
-    let newMessageText = props.newMessageText;
-
-    let onSendMessageClick = () => {
-        props.sendMessage();
-    }
-
-    let onNewMessageChange = (e) => {
-        let text = e.target.value;
-        props.messageChange(text);
+   
+    let addNewMessage = (values) =>{
+        props.sendMessage(values.newMessageText);
     }
     return (
         <div className={style_s.dialogs}>
@@ -29,10 +26,21 @@ const Dialogs = (props) => {
             </div>
             <div className={style_s.messages}>
                 {messagesDataElements}
-                <textarea value={newMessageText} onChange={onNewMessageChange} placeholder={"Input new message"}></textarea>
-                <button onClick={onSendMessageClick}>Send</button>
+                <AddMessageFormRedux onSubmit={addNewMessage}/>
+
             </div>
         </div>
     );
 }
+const maxLength30 = maxLengthCreator(30);
+const AddMessageForm = (props) => {
+    return (
+        <form onSubmit={props.handleSubmit}>
+            <Field component={Textarea} placeholder={"Input new message"} name="newMessageText" validate={[required, maxLength30]}/>
+            <button>Send</button>
+        </form>
+    )
+}
+const AddMessageFormRedux = reduxForm({form: "dialogAddMessageForm"})(AddMessageForm);
+
 export default Dialogs;
