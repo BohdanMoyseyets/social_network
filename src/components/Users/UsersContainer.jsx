@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { follow, ignore, setCurrentPage, getUsersRequest } from '../../redux/users-reducer';
+import { follow, ignore, getUsersRequest } from '../../redux/users-reducer';
 import Users from './Users';
 import Preloader from '../common/Preloader';
 import { compose } from 'redux';
@@ -9,19 +9,19 @@ import { getCurrentPage, getIsFetching, getIsFollowingInProgress, getPageSize, g
 class UsersContainerAPI extends React.Component {
 
     componentDidMount() {
-        this.props.getUsersRequest(this.props.currentPage, this.props.pageSize);
+        const {currentPage, pageSize} = this.props;
+        this.props.getUsers(currentPage, pageSize);
     }
     onPageChanged = (selectedPage) => {
-        this.props.setCurrentPage(selectedPage);
-
-        this.props.getUsersRequest(selectedPage, this.props.pageSize);
+        const {pageSize} = this.props;
+        this.props.getUsers(selectedPage, pageSize);
 
     }
 
 
     render() {
         return <>
-            {this.props.isFetching ? <Preloader /> : <Users totalUsersCount={this.props.totalUsersCount}
+            {this.props.isFetching ? <Preloader /> :null} <Users totalUsersCount={this.props.totalUsersCount}
                 pageSize={this.props.pageSize}
                 currentPage={this.props.currentPage}
                 onPageChanged={this.onPageChanged}
@@ -30,7 +30,7 @@ class UsersContainerAPI extends React.Component {
                 ignore={this.props.ignore}
                 follow={this.props.follow}
                 
-            />}
+            />
 
         </>
     }
@@ -68,7 +68,7 @@ let mapStateToProps = (state) => {
 //     }
 // }
 
-export default compose(connect(mapStateToProps, { follow, ignore, setCurrentPage, getUsersRequest }))(UsersContainerAPI)
+export default compose(connect(mapStateToProps, { follow, ignore, getUsers: getUsersRequest }))(UsersContainerAPI)
 // export default connect(mapStateToProps,
 //     {
 //         follow,

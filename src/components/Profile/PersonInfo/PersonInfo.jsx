@@ -2,6 +2,7 @@ import React from 'react';
 import Preloader from '../../common/Preloader';
 import style_s from './PersonInfo.module.css'
 import ProfileStatus from './ProfileStatus';
+import ProfileStatusHooks from './ProfileStatusHooks';
 
 const PersonInfo = (props) =>{
   if(!props.profile){
@@ -17,7 +18,7 @@ const PersonInfo = (props) =>{
         {/* <img src="https://whatsism.com/uploads/posts/2018-07/1530546770_rmk_vdjbx10.jpg"/> */}
         <img src={props.profile.photos.large}/>
         <div>Bohdan Moyseyets</div>
-        <ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
+        <ProfileStatusHooks status={props.status} updateStatus={props.updateStatus}/>
       </div>
     </div>
     );

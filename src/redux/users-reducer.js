@@ -1,4 +1,5 @@
 import { usersAPI } from "../api/api";
+import { updateObjInArray } from "../utils/helpers/obj-helpers";
 
 const FOLLOW_USER = 'FOLLOW_USER';
 const IGNORE_USER = 'IGNORE_USER';
@@ -28,23 +29,13 @@ const usersReducer = (state = initial_state, action) => {
         case FOLLOW_USER: {
             return {
                 ...state,
-                users: state.users.map(u => {
-                    if (u.id === action.userId) {
-                        return { ...u, followed: true }
-                    }
-                    return u;
-                })
+                users: updateObjInArray(state.users, action.userId, "id", { followed: true })
             }
         }
         case IGNORE_USER: {
             return {
                 ...state,
-                users: state.users.map(u => {
-                    if (u.id === action.userId) {
-                        return { ...u, followed: false }
-                    }
-                    return u;
-                })
+                users: updateObjInArray(state.users, action.userId, "id", { followed: false })
             }
         }
         case SET_USERS: {
@@ -54,7 +45,7 @@ const usersReducer = (state = initial_state, action) => {
             return { ...state, currentPage: action.currentPage }
         }
         case SET_TOTAL_USERS_COUNT: {
-            return { ...state, totalUsersCount: action.count > 1180 ? 8000 : action.count }
+            return { ...state, totalUsersCount: action.count }
         }
         case SET_FETCHING: {
             return { ...state, isFetching: action.isFetching }
@@ -83,39 +74,35 @@ export const setFollowingInProgress = (isFollowingInProgress, id) => ({ type: SE
 
 // thunk
 export const getUsersRequest = (currentPage, pageSize) => {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch(setFetching(true));
-        usersAPI.getUser(currentPage, pageSize).then(data => {
-            dispatch(setFetching(false));
-            dispatch(setUsers(data.items));
-            dispatch(setTotalUsersCount(data.totalCount));
-        });
+        dispatch(setCurrentPage(currentPage));
+        let data = await usersAPI.getUser(currentPage, pageSize);
+        dispatch(setFetching(false));
+        dispatch(setUsers(data.items));
+        dispatch(setTotalUsersCount(data.totalCount));
     }
 }
 
+const followIgnoreFlow = async (dispatch, userId, apiMethod, actionCreator) => {
+    dispatch(setFollowingInProgress(true, userId));
+    let response = await apiMethod(userId);
+    if (response.data.resultCode == 0) {
+        dispatch(actionCreator(userId));
+    }
+    dispatch(setFollowingInProgress(false, userId));
+
+}
+
 export const follow = (userId) => {
-    return (dispatch) => {
-        dispatch(setFollowingInProgress(true, userId));
-        usersAPI.follow(userId)
-            .then(response => {
-                if (response.data.resultCode == 0) {
-                    dispatch(followUser(userId));
-                }
-                dispatch(setFollowingInProgress(false, userId));
-            });
+    return async (dispatch) => {
+        followIgnoreFlow(dispatch, userId, usersAPI.follow.bind(usersAPI), followUser);
     }
 }
 
 export const ignore = (userId) => {
-    return (dispatch) => {
-        dispatch(setFollowingInProgress(true, userId));
-        usersAPI.ignore(userId)
-            .then(response => {
-                if (response.data.resultCode == 0) {
-                    dispatch(ignoreUser(userId));
-                }
-                dispatch(setFollowingInProgress(false, userId));
-            });
+    return async (dispatch) => {
+        followIgnoreFlow(dispatch, userId, usersAPI.ignore.bind(usersAPI), ignoreUser);
     }
 }
 
