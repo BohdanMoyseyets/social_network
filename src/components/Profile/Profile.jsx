@@ -6,7 +6,7 @@ import style_s from './Profile.module.css'
 const Profile = (props) => {
   return (
     <div>
-      <PersonInfo profile={props.profile} status={props.status} updateStatus={props.updateStatus}/>
+      <PersonInfo profile={props.profile} saveProfile={props.saveProfile} savePhoto={props.savePhoto} isOwner={props.isOwner} status={props.status} updateStatus={props.updateStatus}/>
       <MyPostsContainer />
     </div>
   );

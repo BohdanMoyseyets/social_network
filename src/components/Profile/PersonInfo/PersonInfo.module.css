@@ -6,14 +6,32 @@
   width: 100%;
 }
 .person_info{
-  display: grid;
-  grid-template-columns: 1fr 5fr;
-  grid-gap: 20px;
+  /* display: grid; */
+  /* grid-template-columns: 1fr 5fr; */
+  /* grid-gap: 20px; */
   align-items: center;
   justify-self: center;
 }
 .person_info img{
-  width: 100%;
+  max-width: 200px;
   margin-top: 10px;
   margin-left: 10px;
+}
+.contact{
+  margin-left: 10px;
+}
+.formControl.error input,
+.formControl.error textarea{
+    border: 2px solid red;
+}
+
+.formControl.error span{
+    color: red;
+}
+
+.formLoginError{
+    padding: 5px;
+    border: 2px solid red;
+    color: red;
+    width: 165px;
 }
