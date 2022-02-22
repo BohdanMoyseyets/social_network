@@ -23,8 +23,8 @@ export type APIResponseType<D = {}, RC = ResultCodeEnum> = {
 }
 
 export const usersAPI = {
-    getUser(currentPage: number, pageSize: number) {
-        return instance.get<GetItemsType>(`users?page=${currentPage}&count=${pageSize}`).then(response => response.data)
+    getUser(currentPage: number, pageSize: number, term: string = "", friend: null | boolean = null) {
+        return instance.get<GetItemsType>(`users?page=${currentPage}&count=${pageSize}&term=${term}` + (friend === null ? '' : `&friend=${friend}`) ).then(response => response.data)
     },
     follow(userId: number) {
         return instance.post<APIResponseType>(`follow/${userId}`).then(response => response.data)

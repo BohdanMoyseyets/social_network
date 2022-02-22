@@ -1,5 +1,5 @@
 import React from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 import { required } from "../../utils/validators/validators";
 import { Input } from "../common/FormsControls";
@@ -35,17 +35,6 @@ const LoginForm: React.FC<InjectedFormProps<LoginFormValuesType, LoginFormOwnVal
 }
 const LoginReduxForm = reduxForm<LoginFormValuesType, LoginFormOwnValues>({ form: 'login' })(LoginForm)
 
-type MapStateToPropsType = {
-    captchaUrl: string | null
-    isLogged: boolean
-
-}
-
-type MapDispatchToPropsType = {
-    login: (email: string, password: string, rememberMe: boolean, captcha: any)=> void
-
-}
-
 type LoginFormValuesType = {
     captcha: any
     email:string
@@ -53,26 +42,27 @@ type LoginFormValuesType = {
     rememberMe: boolean
 }
 
-const Login: React.FC<MapStateToPropsType & MapDispatchToPropsType> = (props) => {
-    const onSubmit = (formData: any) => {
-        props.login(formData.email, formData.password, formData.rememberMe, formData.captcha);
+export const Login: React.FC = (props) => {
+
+    const captchaUrl = useSelector((state:AppStateType) => state.auth.captchaUrl)
+    const isLogged = useSelector((state:AppStateType) => state.auth.isLogged)
+
+    const dispatch = useDispatch()
+
+
+    const onSubmit = (formData: LoginFormValuesType) => {
+        dispatch(login(formData.email, formData.password, formData.rememberMe, formData.captcha));
     }
 
-    if(props.isLogged){
+    if(isLogged){
         return <Redirect to={"/profile"}/>
     }
 
     return (
         <div>
             <h1>Login</h1>
-            <LoginReduxForm onSubmit={onSubmit} captchaUrl={props.captchaUrl}/>
+            <LoginReduxForm onSubmit={onSubmit} captchaUrl={captchaUrl}/>
         </div>
 
     )
 }
-const mapStateToProps = (state: AppStateType) =>({
-    captchaUrl: state.auth.captchaUrl,
-    isLogged: state.auth.isLogged
-})
-
-export default connect(mapStateToProps, { login })(Login);
