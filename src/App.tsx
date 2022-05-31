@@ -42,9 +42,9 @@ class App extends React.Component<MapStatePropsType & MapDispatchPropsType> {
   }
   render() {
     console.log("yoyoyo");
-    if (!this.props.initialized) {
-      return <Preloader />
-    }
+    // if (!this.props.initialized) {
+    //   return <Preloader />
+    // }
     return (
       <Layout>
         <Header />
